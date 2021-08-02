@@ -53,19 +53,19 @@ if arg1 in products:
                     'div', attrs={'class': 'product__single-subtitle'}).getText() == 'Общая оценка':
                 name = soup_final.find(
                     'h1', attrs={'class': 'main-title testlab-caption-products util-inline-block'}).getText()
-                rating = soup_final.find(
-                    'div', attrs={'class': ['total green', 'total orange', 'total red']}).getText()
+                rating = int(soup_final.find(
+                    'div', attrs={'class': ['total green', 'total orange', 'total red']}).getText())
                 qualities = soup_final.find_all(
                     'div', attrs={'class': 'rate-item__value'})
                 try:
-                    safety = qualities[0].getText().replace(
-                        '\n', '').replace('n', '')
-                    naturality = qualities[1].getText().replace(
-                        '\n', '').replace('n', '')
-                    nutrition = qualities[2].getText().replace(
-                        '\n', '').replace('n', '')
-                    quality = qualities[3].getText().replace(
-                        '\n', '').replace('n', '')
+                    safety = int(qualities[0].getText().replace(
+                        '\n', '').replace('\\n', ''))
+                    naturality = int(qualities[1].getText().replace(
+                        '\n', '').replace('\\n', ''))
+                    nutrition = int(qualities[2].getText().replace(
+                        '\n', '').replace('\\n', ''))
+                    quality = int(qualities[3].getText().replace(
+                        '\n', '').replace('\\n', ''))
                 except Exception:
                     safety = None
                     naturality = None
