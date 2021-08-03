@@ -92,7 +92,8 @@ if arg1 in products:
                 }
 
                 # Вместо json
-                if finals.count_documents(product_info) < 1:
-                    finals.insert_one(product_info)
+                finals.update_one({'link': product_info['link']}, {
+                                  '$set': product_info}, upsert=True)
+
 
 sort(int(input('Не ниже какого рейтинга выводим товары? ')))
