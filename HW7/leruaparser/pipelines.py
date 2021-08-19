@@ -7,7 +7,9 @@
 # useful for handling different item types with a single interface
 import scrapy
 from itemadapter import ItemAdapter
+from pymongo import MongoClient
 from scrapy.pipelines.images import ImagesPipeline
+
 
 class LeruaparserPipeline:
     def process_item(self, item, spider):
@@ -15,10 +17,16 @@ class LeruaparserPipeline:
             item['price'] = float(item['price'])
         if isinstance(item, list):
             item['price'] = [float(price) for price in item['price']]
+        collection = self.mongo_base[spider.name]
+        collection.insert_one(item)
         return item
 
 
 class LeruaPhotosPipeline(ImagesPipeline):
+    def __init__(self):
+        client = MongoClient('localhost', 27017)
+        self.mongo_base = client['books']
+
     def get_media_requests(self, item, info):
         if item['photos']:
             for img in item['photos']:
